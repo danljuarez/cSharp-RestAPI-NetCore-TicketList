@@ -3,6 +3,42 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+.git/
+.github/
+
+.vs/
+.editorconfig
+TestResults/
+RESTfulNetCoreWebAPI-TicketList/bin/
+RESTfulNetCoreWebAPI-TicketList/obj/
+RESTfulNetCoreWebAPI-TicketList.Tests.MSTest/bin/
+RESTfulNetCoreWebAPI-TicketList.Tests.MSTest/obj/
+
+obj
+*.suo
+*.user
+*.DotSettings
+
+/packages/
+!packages/repositories.config
+
+_NCrunch_*
+*.ncrunchproject
+*.ncrunchsolution
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
 # User-specific files
 *.rsuser
 *.suo
