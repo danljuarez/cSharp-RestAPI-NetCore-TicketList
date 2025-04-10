@@ -1,52 +1,58 @@
 # Project C# ASP.NET Core RESTful Web API
 #### Author: Daniel Juarez
 
-## Overview
-The author has developed this project to provide technical interviewers, prior to a potential interview, with a sample of a fully functional [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) C# ASP.NET Core RESTful web API for ticket services, in addition to [other services](#miscellaneous-service) described in the [user stories](#user-stories) section.
+## Project Overview
+This project has been developed to provide technical interviewers with a comprehensive preview of a fully functional CRUD C# ASP.NET Core RESTful Web API, specifically designed for ticket services and [additional functionalities](#miscellaneous-service) outlined in the [user stories](#user-stories) section. The implementation serves as a practical demonstration of key software engineering concepts, focusing on best practices and industry standards.
 
-This implementation aims to demonstrate approaches to:
-- Dependency Injection.
-- Implementing Swagger for API documentation.
-- Following C# code best practices.
-- Structuring the project following clean architecture principles.
-- Error handling using exceptions types.
-- Unit testing using MS Unit Test and Moq.
-- Information how to publish this project to Azure App Services.
+Key highlights of the project include:
+- **Dependency Injection**: Demonstrating the use of Dependency Injection to achieve loose coupling and enhance testability.
+- **API Documentation**: Used Swagger to generate clear, concise documentation and enhance developer experience.
+- **Adherence to C# Best Practices**: Following industry-standard C# coding conventions to ensure readability, maintainability, and scalability.
+- **Clean Architecture Principles**: Structuring the project in alignment with Clean Architecture to promote separation of concerns and maintainable code.
+- **Error Handling**: Implemented a structured exception hierarchy to enhance fault tolerance and streamline error management.
+- **Extension Methods**: A valuable tool in C# that enables developers to extend the capabilities of existing types, improving code flexibility and scalability.
+- **Unit Testing**: Used MS Unit Test and Moq, with flexibility to incorporate other C# test frameworks, to drive test-driven development (TDD) and ensure high code coverage.
+- **Azure Deployment**: Includes Microsoft-provided step-by-step guidance for publishing the project to Azure App Services.
 
-During the interview, the author will be able to explain any aspect of these approaches.
+Throughout the interview, I will be available to explain any of these approaches in detail, discussing the rationale behind the design choices and their benefits in real-world application development.
 
-This project has been implemented using `Visual Studio 2022 Community Edition version 17.12.3` and `Framework .NET 8` (long-term support). It utilizes an
-"InMemoryDatabase" to store sample data, ensuring easy to follow and portability for interview purposes.
+## Technical Specifications
+- **Development Environment**: Visual Studio 2022 Community Edition version 17.12.3
+- **Framework**: C# 12 with .NET 8 (Long-Term Support)
+- **Database**: InMemoryDatabase for easy portability and demonstration purposes
 
->The elaboration of this document has been divided into 4 parts:
->
-> 1. **[Details](#details)**: Project goal and model definition.
->
-> 2. **[User Stories](#user-stories)**: Elaboration of the expectations.
->
-> 3. **[Code Implementation](#code-implementation)**: Provides an explanation how to execute the project code.
->
-> 4. **[To publish this project to Azure](#to-publish-this-project-to-azure)**: Provides information how to deploy this project to Azure App Services.
+## Document Structure
+This document is divided into four sections:
+
+ 1. **[Details](#details)**: Project goals, model definition, and technical requirements.
+
+ 2. **[User Stories](#user-stories)**: Elaboration of the project's expectations and functional requirements.
+
+ 3. **[Code Implementation and Setup](#code-implementation-and-setup)**: Step-by-step guide on executing the project code.
+
+ 4. **[Publishing to Azure App Service](#publishing-to-azure-app-service)**: Provides information how to deploy this project to Azure App Services.
 
 ## Details
-The RESTful Web API source code solution implements:<br/>
-* A Ticket List Service with the following Basic CRUD functionality:
-    * Add a new "Ticket Item" using <span style="color:ghostwhite;background-color:green;border-radius:3px;padding:1px 3px">POST</span> method and an InputDTO model with AutoMapper extension.
-    * Update an existing "Ticket Item" using <span style="color:ghostwhite;background-color:mediumseagreen;border-radius:3px;padding:1px 3px">PATCH</span> method and JsonPatchDocument extension.
-    * Return a single "Ticket Item" using <span style="color:ghostwhite;background-color:dodgerblue;border-radius:3px;padding:1px 3px">GET</span> method.
-    * Return a list of "Ticket Items" using <span style="color:ghostwhite;background-color:dodgerblue;border-radius:3px;padding:1px 3px">GET</span> method.
-    * Remove a "Ticket Item" using <span style="color:ghostwhite;background-color:firebrick;border-radius:3px;padding:1px 3px">DELETE</span> method.
+The RESTful Web API Source Code Solution implements two primary services:<br/>
+### Ticket List Service
+* **CRUD Operations**:
+    * **Create**: Add a new "Ticket Item" using <span style="color:ghostwhite;background-color:green;border-radius:3px;padding:1px 3px">POST</span> method with InputDTO model and AutoMapper extension.
+    * **Update**: Update an existing "Ticket Item" using <span style="color:ghostwhite;background-color:mediumseagreen;border-radius:3px;padding:1px 3px">PATCH</span> method with JsonPatchDocument extension.
+    * **Read**: Return a single "Ticket Item" using <span style="color:ghostwhite;background-color:dodgerblue;border-radius:3px;padding:1px 3px">GET</span> method.
+    * **Read (List)**: Return a list of "Ticket Items" using <span style="color:ghostwhite;background-color:dodgerblue;border-radius:3px;padding:1px 3px">GET</span> method.
+    * **Delete**: Remove a "Ticket Item" using <span style="color:ghostwhite;background-color:firebrick;border-radius:3px;padding:1px 3px">DELETE</span> method.
 
-    * Ticket object definition:
-        * Id
-        * EventName
-        * Description
-        * EventDate (Date and Time)
-        * TicketNumber (Computed class property based on EventDate and ticket Id)
+* **Ticket object definition**:
+    * `Id`
+    * `EventName`
+    * `Description`
+    * `EventDate` (Date and Time)
+    * `TicketNumber` (Computed class property based on `EventDate` and ticket `Id`)
 
-* A Miscellaneous Service with the following features (endpoints):
-    * Calculation of [Fibonacci Sequence](https://en.wikipedia.org/wiki/Fibonacci_sequence).- Calculates Fibonacci sequence numbers up to a specified maximum value passed as an argument.
-    * Determine [Palindrome](https://en.wikipedia.org/wiki/Palindrome) Words.- Determine which words are palindromes when given a list of words. This endpoint should `only` allow words.
+### Miscellaneous Service
+* **Endpoints:**
+    * [Fibonacci Sequence](https://en.wikipedia.org/wiki/Fibonacci_sequence): Calculate Fibonacci sequence numbers up to a specified maximum value.
+    * [Palindrome](https://en.wikipedia.org/wiki/Palindrome) Words: Determine which words are palindromes from a given list of words.
 
 ## User Stories
 ### Ticket Services:
@@ -342,38 +348,33 @@ The RESTful Web API source code solution implements:<br/>
 
         Status Code: 400 Bad Request
         ```
-## Code Implementation
-This project has been implemented using Visual Studio 2022 Community Edition. If you don't have installed in your system, you can visit the [Microsoft Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) to download a free copy.
+## Code Implementation and Setup
+This project utilizes Visual Studio 2022 Community Edition and adheres to clean architecture principles, ensuring a maintainable, scalable, and testable design. The solution consists of two projects:
 
-This solution is organized into two projects following clean architecture principles, ensuring effective separation of concerns. This design supports easier maintenance, scalability, and unit testing, allowing for modifications without affecting the entire system:
+- **RESTfulNetCoreWebAPI-TicketList**: The RESTful Web API project.
+- **RESTfulNetCoreWebAPI-TicketList.Tests.MSTest**: Unit tests for the RESTful Web API project.
 
->- **RESTfulNetCoreWebAPI-TicketList** - The RESTful Web API project.
->- **RESTfulNetCoreWebAPI-TicketList.Tests.MSTest** - Unit Test for the RESTful Web API project.
-
-### To open and run the project from Visual Studio 2022: <br/>
-This project requires the .NET 8.0 SDK. Please verify its installation by running the following command in your preferred terminal:
-```
-dotnet --list-sdks
-```
-Output similar to the following example appears:
-```
-6.0.317 [C:\Program Files\dotnet\sdk]
-7.0.401 [C:\Program Files\dotnet\sdk]
-8.0.204 [C:\Program Files\dotnet\sdk]
-8.0.300 [C:\Program Files\dotnet\sdk]
-```
-Ensure that a version that starts with `8` is listed. If none is listed or the command isn't found, [install the most recent .NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download).
+### Prerequisites
+* **Visual Studio 2022**: Download a free copy from the [Microsoft Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) website if not already installed.
 
 
-- Open Visual Studio 2022.
-- Choose 'Open a Project or Solution'.
-- Choose folder where the application has been unzipped or git cloned, and choose: `RESTfulNetCoreWebAPI-TicketList.sln`
-- Press `F5` or click on run button <<span style="color:green;border-radius:3px;padding:2px 2px 1px 1px">▶</span> http> at the top of VS 2022 IDE to run the application in debug mode: the Swagger document will open, displaying all available services:
+* **.NET 8.0 SDK**: Verify installation by running dotnet `--list-sdks` in your terminal. Ensure a version starting with `8` is listed. If not, install the latest [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download).
+
+### Running the Project
+Clone the repository to your local machine using Git.
+
+### Option 1: Visual Studio 2022
+1. Open Visual Studio 2022.
+2. Choose "Open a Project or Solution".
+3. Select the folder containing the unzipped or cloned application and choose `RESTfulNetCoreWebAPI-TicketList.sln`.
+4. Press `F5` or click on run button <<span style="color:green;border-radius:3px;padding:2px 2px 1px 1px">▶</span> http> to run the application in debug mode. <br/>
+The Swagger document will open, displaying all available services:
     ![](./screenshots/screenshot-01.JPG)
 
-### Or to run the project from the Command Prompt:
-To execute the project from the command prompt from Visual Studio IDE:
-- Tools (at the top menu from the IDE) -> Command Line -> Developer Command Prompt:
+### Option 2: Command Prompt
+1. Open the Developer Command Prompt from Visual Studio IDE:
+
+    Tools (top menu) -> Command Line -> Developer Command Prompt:
     ```
     **********************************************************************
     ** Visual Studio 2022 Developer Command Prompt v17.10.2
@@ -382,38 +383,47 @@ To execute the project from the command prompt from Visual Studio IDE:
 
     C:\<YourDrivePath>\RESTfulNetCoreWebAPI-TicketList>
     ```
-- From the command prompt type: `cd RESTfulNetCoreWebAPI-TicketList` < Enter >
-- From the command prompt type: `dotnet run` < Enter >
-    ```
-    C:\<YourDrivePath>\cSharp-RestAPI-NetCore-TicketList>cd RESTfulNetCoreWebAPI-TicketList ⤶
-    C:\<YourDrivePath>\cSharp-RestAPI-NetCore-TicketList\RESTfulNetCoreWebAPI-TicketList>dotnet run ⤶
-    ```
-- Will display the following Command Line Console:
-    ```
-    Building...
-    info: Microsoft.EntityFrameworkCore.Update[30100]
-          Saved 4 entities to in-memory store.
-    info: Microsoft.Hosting.Lifetime[14]
-          Now listening on: http://localhost:[WebAPIport#]
-    info: Microsoft.Hosting.Lifetime[0]
-          Application started. Press Ctrl+C to shut down.
-    info: Microsoft.Hosting.Lifetime[0]
-          Hosting environment: Development
-    info: Microsoft.Hosting.Lifetime[0]
-          Content root path: C:\<YourDrivePath>\cSharp-RestAPI-NetCore-TicketList\RESTfulNetCoreWebAPI-TicketList
-    ```
-- The Swagger document will not be available during this execution; however, the web API service will remain operational and can be accessed using Postman or your preferred API client:
+2. Navigate to the project directory and run the following command to start the application in debug mode:
+
+    - From the command prompt type: `cd RESTfulNetCoreWebAPI-TicketList` < Enter >
+    - From the command prompt type: `dotnet run` < Enter >
+        ```
+        C:\<YourDrivePath>\cSharp-RestAPI-NetCore-TicketList>cd RESTfulNetCoreWebAPI-TicketList ⤶
+        C:\<YourDrivePath>\cSharp-RestAPI-NetCore-TicketList\RESTfulNetCoreWebAPI-TicketList>dotnet run ⤶
+        ```
+    - When running the project, you should see the following output in the Command Line Console:
+        ```
+        Building...
+        info: Microsoft.EntityFrameworkCore.Update[30100]
+            Saved 4 entities to in-memory store.
+        info: Microsoft.Hosting.Lifetime[14]
+            Now listening on: http://localhost:[WebAPIport#]
+        info: Microsoft.Hosting.Lifetime[0]
+            Application started. Press Ctrl+C to shut down.
+        info: Microsoft.Hosting.Lifetime[0]
+            Hosting environment: Development
+        info: Microsoft.Hosting.Lifetime[0]
+            Content root path: C:\<YourDrivePath>\cSharp-RestAPI-NetCore-TicketList\RESTfulNetCoreWebAPI-TicketList
+        ```
+3. The Swagger document will not be available during this execution; however, the web API service will remain operational and can be accessed using Postman or your preferred API client:
 
     ![](./screenshots/screenshot-02.JPG)
 
-## To publish this project to Azure
-Once you have verified that the ASP.NET Core RESTful Web API is running and working properly:
-- You are now ready to [publish the web API to Azure App Service](https://learn.microsoft.com/en-us/aspnet/core/tutorials/publish-to-azure-api-management-using-vs?view=aspnetcore-9.0#publish-the-web-api-to-azure-app-service).
-- You may need to [create a new Azure API Management instance by using the Azure portal](https://learn.microsoft.com/en-us/azure/api-management/get-started-create-service-instance).
-- You may need to [import and publish your first API](https://learn.microsoft.com/en-us/azure/api-management/import-and-publish).
-- You may need to [create and publish a product](https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-add-products?tabs=azure-portal&pivots=interactive).
-- Finally, you may need to [authenticate your API and connector with Microsoft Entra ID](https://learn.microsoft.com/en-us/connectors/custom-connectors/azure-active-directory-authentication).
+## Publishing to Azure App Service
+After verifying the ASP.NET Core RESTful Web API is functioning correctly, you can publish it to Azure App Service. 
 
-<br/>
+Follow these steps:
+1. [Create an Azure API Management instance](https://learn.microsoft.com/en-us/azure/api-management/get-started-create-service-instance): Use the Azure portal to create a new instance, if necessary.
+2. [Import and publish your API](https://learn.microsoft.com/en-us/azure/api-management/import-and-publish): Import your API and publish it to Azure API Management.
+3. [Create and publish a product](https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-add-products?tabs=azure-portal&pivots=interactive): Create a product and publish it to Azure API Management.
+4. [Authenticate your API and connector](https://learn.microsoft.com/en-us/connectors/custom-connectors/azure-active-directory-authentication): Authenticate your API and connector with Microsoft Entra ID.
+
+By completing these steps, you can successfully publish your ASP.NET Core RESTful Web API to Azure App Service.
+
+## Additional Resources
+- Azure API Management documentation: https://docs.microsoft.com/en-us/azure/api-management/
+- Azure App Service documentation: https://docs.microsoft.com/en-us/azure/app-service/
+- Microsoft Entra ID documentation: https://docs.microsoft.com/en-us/azure/active-directory/
+
 <br/>
 Thank you.
