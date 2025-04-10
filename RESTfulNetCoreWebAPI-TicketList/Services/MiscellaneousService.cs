@@ -15,11 +15,6 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
 
         public List<int> FibonacciList(int maxFibonacci)
         {
-            if (maxFibonacci < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
             return _fibonacciSequence.CalculateFibonacci(maxFibonacci);
         }
 
