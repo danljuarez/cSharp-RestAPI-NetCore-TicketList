@@ -7,6 +7,9 @@
         /// </summary>
         /// <param name="maxFibonacci">The maximum value in the Fibonacci sequence. Defaults to 55</param>
         /// <returns>A list of Fibonacci numbers up to the specified maximum value.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="maxFibonacci"/> is less than 0.
+        /// </exception>
         public List<int> CalculateFibonacci(int maxFibonacci = 55)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(maxFibonacci);
