@@ -328,7 +328,7 @@ The RESTful Web API Source Code Solution implements two primary services:<br/>
 
         Returned: BODY
             <Error Object>
-            With description: "words list contain at least an element that is not allowed. Try with ['civic', 'type', 'radar'], will respond with ['civic', 'radar']"
+            With description: "words list contain at least one element that is not allowed. Try with ['civic', 'type', 'radar'], will respond with ['civic', 'radar']"
 
         Status Code: 400 Bad Request
         ```
@@ -344,7 +344,7 @@ The RESTful Web API Source Code Solution implements two primary services:<br/>
 
         Returned: BODY
             <Error Object>
-            With description: "words list contain at least an element that is not allowed. Try with ['civic', 'type', 'radar'], will respond with ['civic', 'radar']"
+            With description: "words list contain at least one element that is not allowed. Try with ['civic', 'type', 'radar'], will respond with ['civic', 'radar']"
 
         Status Code: 400 Bad Request
         ```

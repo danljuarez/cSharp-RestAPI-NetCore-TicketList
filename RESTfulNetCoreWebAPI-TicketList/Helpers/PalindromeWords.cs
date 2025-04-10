@@ -4,66 +4,45 @@ namespace RESTfulNetCoreWebAPI_TicketList.Helpers
 {
     public class PalindromeWords : IPalindromeWords
     {
-        private const string DO_NOT_ALLOW_SANITIZED_WORDS_WITH_JUST_NUMBERS = @"^(?![0-9]+$)[a-zA-Z0-9_-]{2,}$";
+        private const string ALLOWED_WORD_PATTERN = @"^(?![0-9]+$)[a-zA-Z0-9_-]{2,}$"; // Pattern that ensures the word contains at least two characters and does not consist only of numbers.
+        private const string TRY_SUGGESTION = "Try with ['civic', 'type', 'radar'], will respond with ['civic', 'radar']";
 
+        /// <summary>
+        /// Retrieves a list of palindrome words from the given list of words.
+        /// </summary>
+        /// <param name="words">The list of words to check for palindromes.</param>
+        /// <returns>A list of palindrome words.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the input list or an element is null or empty.</exception>
+        /// <exception cref="ArgumentException">Thrown if the input list contains at least one element that is not allowed.</exception>
         public List<string> GetPalindromeWords(string[]? words)
         {
-            var trySuggestion = "Try with ['civic', 'type', 'radar'], will respond with ['civic', 'radar']";
-
             if (words == null || words.Length == 0)
             {
-                throw new ArgumentNullException($"{nameof(words)} list is null or empty. {trySuggestion}");
+                throw new ArgumentNullException($"{nameof(words)} list is null or empty. {TRY_SUGGESTION}");
             }
 
-            // Detect if each of the words in the list is allowed
-            if (!IsEachWordAllowed(words))
+            if (!words.All(IsWordAllowed))
             {
-                throw new ArgumentException($"{nameof(words)} list contain at least an element that is not allowed. {trySuggestion}");
+                throw new ArgumentException($"{nameof(words)} list contains at least one element that is not allowed. {TRY_SUGGESTION}");
             }
 
-            var palindromeWords = new List<string>();
-            foreach (var word in words)
-            {
-                // Reverse word
-                var reversedWord = "";
-                for (var i = word.Length - 1; i >= 0; i--)
-                {
-                    reversedWord += word.Substring(i, 1);
-                }
-
-                // Determine if it is a palindrome word
-                if (word.ToLower() == reversedWord.ToLower())
-                {
-                    palindromeWords.Add(word);
-                }
-            }
-
-            return palindromeWords;
+            return words.Where(IsPalindrome).ToList();
         }
 
-        private bool IsASanitizedWordWithoutJustNumbers(string word)
+        private bool IsWordAllowed(string word)
         {
-            var regex = new Regex(DO_NOT_ALLOW_SANITIZED_WORDS_WITH_JUST_NUMBERS);
-
-            return regex.IsMatch(word);
-        }
-
-        private bool IsEachWordAllowed(string[] words)
-        {
-            foreach (var word in words)
+            if (string.IsNullOrEmpty(word))
             {
-                if (string.IsNullOrEmpty(word))
-                {
-                    throw new ArgumentNullException($"{nameof(word)} cannot be null or empty.");
-                }
-
-                if (!IsASanitizedWordWithoutJustNumbers(word))
-                {
-                    return false;
-                }
+                throw new ArgumentNullException($"Word cannot be null or empty.");
             }
 
-            return true;
+            return Regex.IsMatch(word, ALLOWED_WORD_PATTERN);
+        }
+
+        private bool IsPalindrome(string word)
+        {
+            var reversedWord = new string(word.Reverse().ToArray());
+            return word.ToLower() == reversedWord.ToLower();
         }
     }
 }
