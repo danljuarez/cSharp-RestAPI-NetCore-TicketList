@@ -9,10 +9,7 @@
         /// <returns>A list of Fibonacci numbers up to the specified maximum value.</returns>
         public List<int> CalculateFibonacci(int maxFibonacci = 55)
         {
-            if (maxFibonacci < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(maxFibonacci);
 
             var fibonacciSequence = new List<int> { 0, 1 };
 
