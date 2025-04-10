@@ -33,15 +33,18 @@ namespace RESTfulNetCoreWebAPI_TicketList.Controllers
 
         // GET api/miscellaneous/getPalindromeWords
         [HttpPost("getPalindromeWords")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<string>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetPalindromeWords([FromBody] string[]? words)
         {
             try
             {
-                return Ok(_miscellaneousService.GetPalindromeWords(words));
+                var palindromeWords = _miscellaneousService.GetPalindromeWords(words);
+                return Ok(palindromeWords);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Description", e.Message);
+                ModelState.AddModelError("Description", ex.Message);
                 return ValidationProblem(ModelState);
             }
         }
