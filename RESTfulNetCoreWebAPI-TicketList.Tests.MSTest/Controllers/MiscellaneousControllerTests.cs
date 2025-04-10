@@ -15,7 +15,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         private readonly PalindromeWords _palindromeWords = new();
 
         [TestMethod]
-        public void GetFiboSequence_Should_return_statusCode_Ok_confirm_count_and_returned_values_are_as_expected()
+        public void GetFibonacciSequence_Should_return_statusCode_Ok_confirm_count_and_returned_values_are_as_expected()
         {
             // Arrange
             var maxFibonacciValue = 8;
@@ -23,13 +23,13 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var fiboSequenceSample = Data.DataFactory.GetFirstSinglesFibonacciSequence();
 
             _miscellaneousService
-                .Setup(_ => _.FibonacciList(It.IsAny<int>()))
+                .Setup(_ => _.GetFibonacciSequence(It.IsAny<int>()))
                 .Returns(expectedFibonacciSequence);
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
 
             // Act
-            var actionResult = miscellaneousController.GetFiboSequence(It.IsAny<int>());
+            var actionResult = miscellaneousController.GetFibonacciSequence(It.IsAny<int>());
             var result = (OkObjectResult)actionResult;
             var fiboList = (List<int>?)result?.Value;
 
@@ -43,21 +43,45 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         }
 
         [TestMethod]
-        public void GetFiboSequence_Should_return_statusCode_BadRequest_When_ArgumentOutOfRangeException_is_thrown()
+        public void GetFibonacciSequence_Should_return_statusCode_Ok_confirm_count_returned_is_one()
+        {
+            // Arrange
+            var maxFibonacciValue = 0;
+            var expectedFibonacciSequence = _fibonacciHelper.CalculateFibonacci(maxFibonacciValue);
+
+            _miscellaneousService
+                .Setup(_ => _.GetFibonacciSequence(It.IsAny<int>()))
+                .Returns(expectedFibonacciSequence);
+
+            var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
+
+            // Act
+            var actionResult = miscellaneousController.GetFibonacciSequence(maxFibonacciValue);
+            var result = (OkObjectResult)actionResult;
+            var fiboList = (List<int>?)result?.Value;
+
+            // Assert
+            Assert.AreEqual((int)HttpStatusCode.OK, result?.StatusCode);
+            Assert.AreEqual(1, fiboList?.Count);
+        }
+
+        [TestMethod]
+        public void GetFibonacciSequence_Should_return_statusCode_BadRequest_When_ArgumentOutOfRangeException_is_thrown()
         {
             // Arrange
             _miscellaneousService
-                .Setup(_ => _.FibonacciList(It.IsAny<int>()))
+                .Setup(_ => _.GetFibonacciSequence(It.IsAny<int>()))
                 .Throws<ArgumentOutOfRangeException>();
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
 
             // Act
-            var actionResult = miscellaneousController.GetFiboSequence(It.IsAny<int>());
-            var result = (BadRequestResult)actionResult;
+            var actionResult = miscellaneousController.GetFibonacciSequence(-1);
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.IsNotNull(result?.Value);
         }
 
         [TestMethod]

@@ -13,7 +13,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
             _palindromeWords = palindromeWords;
         }
 
-        public List<int> FibonacciList(int maxFibonacci)
+        public List<int> GetFibonacciSequence(int maxFibonacci)
         {
             return _fibonacciSequence.CalculateFibonacci(maxFibonacci);
         }

@@ -18,7 +18,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var miscellaneousService = new MiscellaneousService(_fibonacciSequence, _palindromeWords);
 
             // Act
-            var result = miscellaneousService.FibonacciList(maxFibonacciValue);
+            var result = miscellaneousService.GetFibonacciSequence(maxFibonacciValue);
 
             // Assert
             Assert.IsNotNull(result);
@@ -36,7 +36,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var miscellaneousService = new MiscellaneousService(_fibonacciSequence, _palindromeWords);
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => miscellaneousService.FibonacciList(-1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => miscellaneousService.GetFibonacciSequence(-1));
         }
 
         [TestMethod]

@@ -12,6 +12,11 @@
         /// </exception>
         public List<int> CalculateFibonacci(int maxFibonacci = 55)
         {
+            if (maxFibonacci == 0)
+            {
+                return [0];
+            }
+
             ArgumentOutOfRangeException.ThrowIfNegative(maxFibonacci);
 
             var fibonacciSequence = new List<int> { 0, 1 };

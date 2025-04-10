@@ -16,15 +16,18 @@ namespace RESTfulNetCoreWebAPI_TicketList.Controllers
 
         // GET api/miscellaneous/getFibonacciSequence/90
         [HttpGet("getFibonacciSequence/{maxSequence}")]
-        public IActionResult GetFiboSequence([FromRoute] int maxSequence)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<int>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetFibonacciSequence([FromRoute] int maxSequence)
         {
             try
             {
-                return Ok(_miscellaneousService.FibonacciList(maxSequence));
+                var fibonacciSequence = _miscellaneousService.GetFibonacciSequence(maxSequence);
+                return Ok(fibonacciSequence);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException ex)
             {
-                return BadRequest();
+                return BadRequest(new { error = ex.Message });
             }
         }
 
