@@ -2,6 +2,11 @@
 {
     public class FibonacciSequence : IFibonacciSequence
     {
+        /// <summary>
+        /// Generates a Fibonacci sequence up to the specified maximum value.
+        /// </summary>
+        /// <param name="maxFibonacci">The maximum value in the Fibonacci sequence. Defaults to 55</param>
+        /// <returns>A list of Fibonacci numbers up to the specified maximum value.</returns>
         public List<int> CalculateFibonacci(int maxFibonacci = 55)
         {
             if (maxFibonacci < 0)
@@ -9,39 +14,22 @@
                 throw new ArgumentOutOfRangeException();
             }
 
-            var fiboSequence = new List<int>();
+            var fibonacciSequence = new List<int> { 0, 1 };
 
-            var isNotFiboInitial = false;
-            for (var i = 0; i < int.MaxValue; i++)
+            for (int i = 2; ; i++)
             {
-                if (isNotFiboInitial)
-                {
-                    // Break loop if Fibonacci number is greater than maxFibonacci value
-                    if ((fiboSequence[i - 1] + fiboSequence[i - 2]) > maxFibonacci)
-                    {
-                        break;
-                    }
-                    // Add Fibonacci number to list
-                    fiboSequence.Add(fiboSequence[i - 1] + fiboSequence[i - 2]);
-                }
-                else
-                {
-                    // Break loop if max Fibonacci number is within initial numbers
-                    if (i > maxFibonacci)
-                    {
-                        break;
-                    }
+                int nextFibonacci = fibonacciSequence[^1] + fibonacciSequence[^2];
 
-                    // Only for initial Fibonacci numbers
-                    fiboSequence.Add(i);
-                    if (i == 1)
-                    {
-                        isNotFiboInitial = true;
-                    }
+                if (nextFibonacci > maxFibonacci)
+                {
+                    break;
                 }
+
+                fibonacciSequence.Add(nextFibonacci);
             }
 
-            return fiboSequence;
+
+            return fibonacciSequence;
         }
     }
 }
