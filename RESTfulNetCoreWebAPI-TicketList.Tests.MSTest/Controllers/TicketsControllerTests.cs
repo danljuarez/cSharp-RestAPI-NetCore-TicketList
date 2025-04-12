@@ -99,10 +99,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Act
             var actionResult = ticketsController.GetTicketById(It.IsAny<int>());
-            var result = actionResult as BadRequestResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.AreEqual("Value does not fall within the expected range.", result?.Value);
         }
 
         [TestMethod]
@@ -123,7 +124,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Act
             var actionResult = await ticketsController.PostTicket(It.IsAny<TicketInputDTO>());
-            var result = actionResult as CreatedAtRouteResult;
+            var result = actionResult as CreatedAtActionResult;
             var ticket = result?.Value as Ticket;
 
             // Assert
@@ -146,10 +147,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Act
             var actionResult = await ticketsController.PostTicket(It.IsAny<TicketInputDTO>());
-            var result = actionResult as BadRequestResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.AreEqual("Value cannot be null.", result?.Value);
         }
 
         [TestMethod]
@@ -203,10 +205,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Act
             var actionResult = await ticketsController.PatchTicket(0, patchTicket);
-            var result = actionResult as BadRequestResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.AreEqual("Value does not fall within the expected range.", result?.Value);
         }
 
         [TestMethod]
@@ -246,10 +249,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Act
             var actionResult = await ticketsController.PatchTicket(It.IsAny<int>(), patchTicket);
-            var result = actionResult as StatusCodeResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.InternalServerError, result?.StatusCode);
+            Assert.AreEqual("Exception of type 'System.Exception' was thrown.", result?.Value);
             _ticketService.VerifyAll();
         }
 
@@ -273,39 +277,42 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         }
 
         [TestMethod]
-        public async Task DeleteTicket_Should_return_statusCode_NotFound_When_ArgumentNullException_is_thrown()
+        public async Task DeleteTicket_Should_return_statusCode_NotFound_When_KeyNotFoundException_is_thrown()
         {
             // Arrange
             _ticketService
                 .Setup(_ => _.DeleteTicketAsync(It.IsAny<int>()))
-                .Throws<ArgumentNullException>();
+                .Throws(() => new KeyNotFoundException("Ticket not found."));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             // Act
             var actionResult = await ticketsController.DeleteTicket(It.IsAny<int>());
-            var result = (NotFoundResult)actionResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.NotFound, result?.StatusCode);
+            Assert.AreEqual("Ticket not found.", result?.Value);
         }
 
         [TestMethod]
-        public async Task DeleteTicket_Should_return_statusCode_BadRequest_When_ArgumentException_is_thrown()
+        public async Task DeleteTicket_Should_return_statusCode_BadRequest_When_ArgumentOutOfRangeException_is_thrown()
         {
             // Arrange
+            int id = 0;
             _ticketService
                 .Setup(_ => _.DeleteTicketAsync(It.IsAny<int>()))
-                .Throws<ArgumentException>();
+                .Throws(() => new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative"));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             // Act
             var actionResult = await ticketsController.DeleteTicket(It.IsAny<int>());
-            var result = (BadRequestResult)actionResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
+            Assert.AreEqual("Parameter value cannot be cero or negative (Parameter 'id')", result?.Value);
         }
 
         [TestMethod]
@@ -319,10 +326,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Act
             var actionResult = await ticketsController.DeleteTicket(It.IsAny<int>());
-            var result = (StatusCodeResult)actionResult;
+            var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.InternalServerError, result?.StatusCode);
+            Assert.AreEqual("Exception of type 'System.Exception' was thrown.", result?.Value);
         }
     }
 }

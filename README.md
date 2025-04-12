@@ -215,7 +215,7 @@ The RESTful Web API Source Code Solution implements two primary services:<br/>
             <Nothing>
 
         Returned: BODY
-            <Error Object>
+            Value cannot be null.
 
         Status Code: 400 Bad Request
        ```
@@ -248,7 +248,7 @@ The RESTful Web API Source Code Solution implements two primary services:<br/>
             <Nothing>
 
         Returned: BODY
-            <Error Object>
+            Ticket was not found.
 
         Status Code: 404 Not Found
         ```

@@ -52,13 +52,13 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
         {
             if (id < 1)
             {
-                throw new ArgumentException();
+                throw new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative.");
             }
 
             var ticket = _ticketRepository.GetTicket(id);
             if (ticket == null)
             {
-                throw new ArgumentNullException();
+                throw new KeyNotFoundException("Ticket was not found.");
             }
 
             _ticketRepository.DeleteTicket(ticket);

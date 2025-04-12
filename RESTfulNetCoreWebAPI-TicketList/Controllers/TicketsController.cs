@@ -20,103 +20,92 @@ namespace RESTfulNetCoreWebAPI_TicketList.Controllers
             _mapper = mapper; // Use AutoMapper for handling DTOs
         }
 
-        // GET api/tickets/getAll
         [HttpGet("getAll")]
+        [ProducesResponseType(typeof(List<Ticket>), StatusCodes.Status200OK)]
         public IActionResult GetAllTickets()
         {
             var ticketList = _ticketService.GetTickets();
-
             return Ok(ticketList);
         }
 
         // GET api/tickets/1
-        [HttpGet("{id}", Name = "GetTicket")]
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
         public IActionResult GetTicketById([FromRoute] int id)
         {
             try
             {
                 var ticket = _ticketService.GetTicket(id);
-
-                if (ticket == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(ticket);
+                return ticket != null ? Ok(ticket) : NotFound();
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         // POST api/tickets
         [HttpPost]
+        [ProducesResponseType(typeof(Ticket), StatusCodes.Status201Created)]
         public async Task<IActionResult> PostTicket([FromBody] TicketInputDTO? ticketItem)
         {
             try
             {
                 var ticket = _mapper.Map<Ticket>(ticketItem);
-
-                await _ticketService.AddTicketAsync(ticket);
-
-                return CreatedAtRoute("GetTicket", new { id = ticket?.Id }, ticket);
+                var result = await _ticketService.AddTicketAsync(ticket);
+                return CreatedAtAction(nameof(GetTicketById), new { id = result?.Id }, result);
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         // PATCH api/tickets/2
         [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
         public async Task<IActionResult> PatchTicket([FromRoute] int id, [FromBody] JsonPatchDocument<Ticket> ticketItem)
         {
             try
             {
                 var ticket = _ticketService.GetTicket(id);
-                if (ticket == null)
-                {
-                    return NotFound();
-                }
+                if (ticket == null) return NotFound();
 
                 ticketItem.ApplyTo(ticket);
-
                 await _ticketService.PatchTicketAsync(ticket);
-
                 return Ok(ticket);
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
         // DELETE api/ticket/3
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteTicket([FromRoute] int id)
         {
             try
             {
                 await _ticketService.DeleteTicketAsync(id);
-
                 return Ok();
             }
-            catch (ArgumentNullException)
+            catch (KeyNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-            catch (ArgumentException)
+            catch (ArgumentOutOfRangeException ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }
