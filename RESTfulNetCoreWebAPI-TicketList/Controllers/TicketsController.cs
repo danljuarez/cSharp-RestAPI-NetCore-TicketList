@@ -22,9 +22,9 @@ namespace RESTfulNetCoreWebAPI_TicketList.Controllers
 
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(List<Ticket>), StatusCodes.Status200OK)]
-        public IActionResult GetAllTickets()
+        public async Task<IActionResult> GetAllTicketsAsync()
         {
-            var ticketList = _ticketService.GetTickets();
+            var ticketList = await _ticketService.GetTicketsAsync();
             return Ok(ticketList);
         }
 

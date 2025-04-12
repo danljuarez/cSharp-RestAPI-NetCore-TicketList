@@ -1,4 +1,5 @@
-﻿using RESTfulNetCoreWebAPI_TicketList.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RESTfulNetCoreWebAPI_TicketList.Data;
 using RESTfulNetCoreWebAPI_TicketList.Models;
 
 namespace RESTfulNetCoreWebAPI_TicketList.Repositories
@@ -12,9 +13,9 @@ namespace RESTfulNetCoreWebAPI_TicketList.Repositories
             _ticketContext = ticketContext;
         }
 
-        public List<Ticket> GetTickets()
+        public async Task<List<Ticket>> GetTicketsAsync()
         {
-            return _ticketContext.Tickets.ToList();
+            return await _ticketContext.Tickets.ToListAsync();
         }
 
         public Ticket? GetTicket(int id)

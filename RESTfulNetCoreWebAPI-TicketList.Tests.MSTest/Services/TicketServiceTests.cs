@@ -11,19 +11,19 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
         private readonly Mock<ITicketRepository> _ticketRepository = new();
 
         [TestMethod]
-        public void GetTickets_Should_return_count_four_for_all_tickets_list()
+        public async Task GetTicketsAsync_Should_return_count_four_for_all_tickets_list()
         {
             // Arrange
             var expectedCount = 4;
 
             _ticketRepository
-                .Setup(_ => _.GetTickets())
-                .Returns(Data.DataFactory.CreateTicketList());
+                .Setup(_ => _.GetTicketsAsync())
+                .ReturnsAsync(Data.DataFactory.CreateTicketList());
 
             var ticketService = new TicketService(_ticketRepository.Object);
 
             // Act
-            var result = ticketService.GetTickets();
+            var result = await ticketService.GetTicketsAsync();
 
             // Assert
             Assert.AreEqual(expectedCount, result.Count);

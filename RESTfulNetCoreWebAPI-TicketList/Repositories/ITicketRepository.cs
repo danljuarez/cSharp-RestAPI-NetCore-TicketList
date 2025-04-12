@@ -10,7 +10,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Repositories
 
         Ticket? GetTicket(int id);
 
-        List<Ticket> GetTickets();
+        Task<List<Ticket>> GetTicketsAsync();
 
         Task SaveAsync();
 

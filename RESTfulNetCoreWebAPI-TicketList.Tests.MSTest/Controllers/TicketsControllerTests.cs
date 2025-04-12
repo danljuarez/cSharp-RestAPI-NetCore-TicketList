@@ -18,21 +18,21 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         private readonly Mock<IMapper> _mapper = new();
 
         [TestMethod]
-        public void GetAllTickets_Should_return_statusCode_Ok_and_count_four_for_all_tickets_list()
+        public async Task GetAllTicketsAsync_Should_return_statusCode_Ok_and_count_four_for_all_tickets_list()
         {
             // Arrange
             var expectedTicketsCount = 4;
 
             _ticketService
-                .Setup(_ => _.GetTickets())
-                .Returns(Data.DataFactory.CreateTicketList())
+                .Setup(_ => _.GetTicketsAsync())
+                .ReturnsAsync(Data.DataFactory.CreateTicketList())
                 .Verifiable();
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             // Act
-            var actionResult = ticketsController.GetAllTickets();
-            var result = actionResult as OkObjectResult;
+            var actionResult = await ticketsController.GetAllTicketsAsync();
+            var result = (ObjectResult)actionResult;
             var tickets = result?.Value as List<Ticket>;
 
             // Assert
@@ -42,7 +42,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             Assert.IsInstanceOfType(result?.Value, typeof(List<Ticket>));
             Assert.AreEqual("Test Event 01", tickets?[0].EventName);
             Assert.AreEqual("Test Event 02", tickets?[1].EventName);
-            _ticketService.Verify(ts => ts.GetTickets(), Times.Once);
+            _ticketService.Verify(ts => ts.GetTicketsAsync(), Times.Once);
         }
 
         [TestMethod]

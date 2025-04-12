@@ -10,7 +10,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
 
         Ticket? GetTicket(int id);
 
-        List<Ticket> GetTickets();
+        Task<List<Ticket>> GetTicketsAsync();
 
         Task<Ticket> PatchTicketAsync(Ticket ticket);
     }

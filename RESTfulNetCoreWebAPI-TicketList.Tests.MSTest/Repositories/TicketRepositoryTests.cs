@@ -36,17 +36,18 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
         }
 
         [TestMethod]
-        public void GetTickets_Should_confirm_ticket_list_instance_type_and_list_result_count()
+        public async Task GetTicketsAsync_Should_confirm_ticket_list_instance_type_and_list_result_count()
         {
             // Arrange
             var ticketCount = 4;
 
             // Act
-            var result = _ticketRepository?.GetTickets();
+            var result = await _ticketRepository!.GetTicketsAsync();
 
             // Assert
+            Assert.IsNotNull(result);
             Assert.IsInstanceOfType<List<Ticket>>(result);
-            Assert.AreEqual(ticketCount, result.Count);
+            Assert.AreEqual(ticketCount, result?.Count);
         }
 
         [TestMethod]
@@ -64,18 +65,18 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
         }
 
         [TestMethod]
-        public void AddTicket_Should_confirm_ticket_instance_type_and_new_added_ticket()
+        public async Task AddTicket_Should_confirm_ticket_instance_type_and_new_added_ticket()
         {
             // Arrange
             var expectedListCount = 4;
-            var currentCount = _ticketRepository?.GetTickets().Count();
+            var currentCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
 
             // Act
             var result = _ticketRepository?.AddTicket(Data.DataFactory.AddTicket(DateTime.Now.AddDays(-2)));
             _dbContext?.SaveChanges();
 
             var resultId = result?.Id ?? throw new ArgumentNullException();
-            var resultCount = _ticketRepository?.GetTickets().Count();
+            var resultCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
 
             // Assert
             Assert.IsInstanceOfType<Ticket>(result);
@@ -123,19 +124,19 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
         }
 
         [TestMethod]
-        public void DeleteTicket_Should_delete_ticket_id_number_three_and_confirm_ticket_no_longer_exists()
+        public async Task DeleteTicket_Should_delete_ticket_id_number_three_and_confirm_ticket_no_longer_exists()
         {
             // Arrange
             var ticketId = 3;
             var expectedCount = 4;
-            var currentCount = _ticketRepository?.GetTickets().Count();
+            var currentCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
             var ticket = _ticketRepository?.GetTicket(ticketId);
 
             // Act
             _ticketRepository?.DeleteTicket(ticket ?? throw new ArgumentNullException());
             _dbContext?.SaveChanges();
 
-            var resultCount = _ticketRepository?.GetTickets().Count();
+            var resultCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
             var ticketResult = _ticketRepository?.GetTicket(ticketId);
 
             // Assert
@@ -146,16 +147,16 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
         }
 
         [TestMethod]
-        public void SaveAsync_Should_confirm_new_ticket_has_been_added_When_method_is_called()
+        public async Task SaveAsync_Should_confirm_new_ticket_has_been_added_When_method_is_called()
         {
             // Arrange
             var expectedCount = 4;
-            var currentCount = _ticketRepository?.GetTickets().Count();
+            var currentCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
             var result = _ticketRepository?.AddTicket(Data.DataFactory.AddTicket());
 
             // Act
             _ticketRepository?.SaveAsync().Wait();
-            var resultCount = _ticketRepository?.GetTickets().Count();
+            var resultCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
 
             // Assert
             Assert.IsInstanceOfType<Ticket>(result);

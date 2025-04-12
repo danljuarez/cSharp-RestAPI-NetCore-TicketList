@@ -12,9 +12,9 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
             _ticketRepository = ticketRepository;
         }
 
-        public List<Ticket> GetTickets()
+        public async Task<List<Ticket>> GetTicketsAsync()
         {
-            return _ticketRepository.GetTickets();
+            return await _ticketRepository.GetTicketsAsync();
         }
 
         public Ticket? GetTicket(int id)
