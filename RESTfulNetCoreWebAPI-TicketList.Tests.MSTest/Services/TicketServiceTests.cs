@@ -81,7 +81,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var expectedTicketId = 5;
 
             _ticketRepository
-                .Setup(_ => _.AddTicket(It.IsAny<Ticket>()))
+                .Setup(_ => _.AddTicketAsync(It.IsAny<Ticket>()))
                 .Verifiable();
 
             _ticketRepository

@@ -34,7 +34,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
                 throw new ArgumentNullException();
             }
 
-            _ticketRepository.AddTicket(ticket);
+            await _ticketRepository.AddTicketAsync(ticket);
             await _ticketRepository.SaveAsync();
 
             return ticket;

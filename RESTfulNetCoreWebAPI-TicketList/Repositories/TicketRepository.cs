@@ -25,9 +25,9 @@ namespace RESTfulNetCoreWebAPI_TicketList.Repositories
             return ticket;
         }
 
-        public Ticket AddTicket(Ticket ticket)
+        public async Task<Ticket> AddTicketAsync(Ticket ticket)
         {
-            _ticketContext.Tickets.Add(ticket);
+            await _ticketContext.Tickets.AddAsync(ticket);
 
             return ticket;
         }

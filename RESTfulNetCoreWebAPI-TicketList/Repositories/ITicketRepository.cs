@@ -4,7 +4,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Repositories
 {
     public interface ITicketRepository
     {
-        Ticket AddTicket(Ticket ticket);
+        Task<Ticket> AddTicketAsync(Ticket ticket);
 
         void DeleteTicket(Ticket ticket);
 
