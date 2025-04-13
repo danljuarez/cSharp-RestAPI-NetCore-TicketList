@@ -65,13 +65,13 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
         }
 
         [TestMethod]
-        public void AddTicketAsync_Should_throw_ArgumentNullException_When_ticket_object_is_null()
+        public async Task AddTicketAsync_Should_throw_ArgumentNullException_When_ticket_object_is_null()
         {
             // Arrange
             var ticketService = new TicketService(_ticketRepository.Object);
 
             // Act & Assert
-            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => ticketService.AddTicketAsync(null));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => ticketService.AddTicketAsync(null));
         }
 
         [TestMethod]
