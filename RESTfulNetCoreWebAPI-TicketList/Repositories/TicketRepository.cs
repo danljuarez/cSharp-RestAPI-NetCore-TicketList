@@ -18,9 +18,9 @@ namespace RESTfulNetCoreWebAPI_TicketList.Repositories
             return await _ticketContext.Tickets.ToListAsync();
         }
 
-        public Ticket? GetTicket(int id)
+        public async Task<Ticket?> GetTicketAsync(int id)
         {
-            var ticket = _ticketContext.Tickets.FirstOrDefault(t => t.Id == id);
+            var ticket = (await _ticketContext.Tickets.ToListAsync()).FirstOrDefault(t => t.Id == id);
 
             return ticket;
         }

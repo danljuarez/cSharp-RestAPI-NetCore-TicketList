@@ -51,15 +51,16 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
         }
 
         [TestMethod]
-        public void GetTicket_Should_confirm_ticket_instance_type_and_requested_ticket_id()
+        public async Task GetTicketAsync_Should_confirm_ticket_instance_type_and_requested_ticket_id()
         {
             // Arrange
             var ticketId = 1;
 
             // Act
-            var result = _ticketRepository?.GetTicket(ticketId);
+            var result = await _ticketRepository!.GetTicketAsync(ticketId);
 
             //Assert
+            Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(Ticket));
             Assert.AreEqual(ticketId, result.Id);
         }
@@ -91,12 +92,12 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
         }
 
         [TestMethod]
-        public void UpdateTicket_Should_update_ticket_id_number_three_and_confirm_applied_changes()
+        public async Task UpdateTicket_Should_update_ticket_id_number_three_and_confirm_applied_changes()
         {
             // Arrange
             var ticketId = 3;
 
-            var ticket = _ticketRepository?.GetTicket(ticketId);
+            var ticket = await _ticketRepository!.GetTicketAsync(ticketId);
             var currentTicketResult = ticket.DeepCopy(); // DeepCopy() is an extension method created on this project
 
             var ticketToUpdate = Data.DataFactory.TicketFieldsToUpdate();
@@ -111,7 +112,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
             _ticketRepository?.UpdateTicket(ticket ?? throw new ArgumentNullException());
             _dbContext?.SaveChanges();
 
-            var ticketResult = _ticketRepository?.GetTicket(ticketId);
+            var ticketResult = await _ticketRepository!.GetTicketAsync(ticketId);
 
             // Assert
             Assert.AreEqual(ticketId, currentTicketResult?.Id);
@@ -130,14 +131,14 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Repositories
             var ticketId = 3;
             var expectedCount = 4;
             var currentCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
-            var ticket = _ticketRepository?.GetTicket(ticketId);
+            var ticket = await _ticketRepository!.GetTicketAsync(ticketId);
 
             // Act
             _ticketRepository?.DeleteTicket(ticket ?? throw new ArgumentNullException());
             _dbContext?.SaveChanges();
 
             var resultCount = (await _ticketRepository!.GetTicketsAsync())?.Count ?? 0;
-            var ticketResult = _ticketRepository?.GetTicket(ticketId);
+            var ticketResult = await _ticketRepository!.GetTicketAsync(ticketId);
 
             // Assert
             Assert.AreEqual(expectedCount, currentCount);

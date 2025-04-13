@@ -31,14 +31,14 @@ namespace RESTfulNetCoreWebAPI_TicketList.Controllers
         // GET api/tickets/1
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Ticket), StatusCodes.Status200OK)]
-        public IActionResult GetTicketById([FromRoute] int id)
+        public async Task<IActionResult> GetTicketById([FromRoute] int id)
         {
             try
             {
-                var ticket = _ticketService.GetTicket(id);
+                var ticket = await _ticketService.GetTicketAsync(id);
                 return ticket != null ? Ok(ticket) : NotFound();
             }
-            catch (ArgumentException ex)
+            catch (ArgumentOutOfRangeException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -68,7 +68,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Controllers
         {
             try
             {
-                var ticket = _ticketService.GetTicket(id);
+                var ticket = await _ticketService.GetTicketAsync(id);
                 if (ticket == null) return NotFound();
 
                 ticketItem.ApplyTo(ticket);

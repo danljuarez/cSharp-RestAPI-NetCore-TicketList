@@ -17,14 +17,14 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
             return await _ticketRepository.GetTicketsAsync();
         }
 
-        public Ticket? GetTicket(int id)
+        public async Task<Ticket?> GetTicketAsync(int id)
         {
             if (id < 1)
             {
-                throw new ArgumentException();
+                throw new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative.");
             }
 
-            return _ticketRepository.GetTicket(id);
+            return await _ticketRepository.GetTicketAsync(id);
         }
 
         public async Task<Ticket> AddTicketAsync(Ticket? ticket)
@@ -55,7 +55,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
                 throw new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative.");
             }
 
-            var ticket = _ticketRepository.GetTicket(id);
+            var ticket = await _ticketRepository.GetTicketAsync(id);
             if (ticket == null)
             {
                 throw new KeyNotFoundException("Ticket was not found.");

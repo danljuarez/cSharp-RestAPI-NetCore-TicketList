@@ -46,17 +46,17 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         }
 
         [TestMethod]
-        public void GetTicketById_Should_return_statusCode_ok_When_ticket_is_found()
+        public async Task GetTicketById_Should_return_statusCode_ok_When_ticket_is_found()
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns(Data.DataFactory.GetATicket());
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync(Data.DataFactory.GetATicket());
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             // Act
-            var actionResult = ticketsController.GetTicketById(It.IsAny<int>());
+            var actionResult = await ticketsController.GetTicketById(It.IsAny<int>());
             var result = actionResult as OkObjectResult;
             var ticket = result?.Value as Ticket;
 
@@ -70,17 +70,17 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         }
 
         [TestMethod]
-        public void GetTicketById_Should_return_statusCode_NotFound_When_GetTicket_returns_null()
+        public async Task GetTicketById_Should_return_statusCode_NotFound_When_GetTicket_returns_null()
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns((Ticket?)null);
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync((Ticket?)null);
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             // Act
-            var actionResult = ticketsController.GetTicketById(It.IsAny<int>());
+            var actionResult = await ticketsController.GetTicketById(It.IsAny<int>());
             var result = actionResult as NotFoundResult;
 
             // Assert
@@ -88,22 +88,23 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         }
 
         [TestMethod]
-        public void GetTicketById_Should_return_statusCode_BadRequest_When_ArgumentException_is_thrown()
+        public async Task GetTicketById_Should_return_statusCode_BadRequest_When_ArgumentOutOfRangeException_is_thrown()
         {
             // Arrange
+            int id = 0;
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Throws<ArgumentException>();
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Throws(() => new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative"));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             // Act
-            var actionResult = ticketsController.GetTicketById(It.IsAny<int>());
+            var actionResult = await ticketsController.GetTicketById(It.IsAny<int>());
             var result = (ObjectResult)actionResult;
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
-            Assert.AreEqual("Value does not fall within the expected range.", result?.Value);
+            Assert.AreEqual("Parameter value cannot be cero or negative (Parameter 'id')", result?.Value);
         }
 
         [TestMethod]
@@ -162,8 +163,8 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var currentTicket = ticket.DeepCopy(); // DeepCopy() is an extension method created on this project
 
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns(ticket)
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync(ticket)
                 .Verifiable();
 
             _ticketService
@@ -196,9 +197,10 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         public async Task PatchTicket_Should_return_statusCode_BadRequest_When_ticket_id_is_zero()
         {
             // Arrange
+            int id = 0;
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Throws<ArgumentException>();
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Throws(() => new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative"));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
             var patchTicket = new JsonPatchDocument<Ticket>();
@@ -209,7 +211,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result?.StatusCode);
-            Assert.AreEqual("Value does not fall within the expected range.", result?.Value);
+            Assert.AreEqual("Parameter value cannot be cero or negative (Parameter 'id')", result?.Value);
         }
 
         [TestMethod]
@@ -217,8 +219,8 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns((Ticket?)null);
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync((Ticket?)null);
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
@@ -235,8 +237,8 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns(Data.DataFactory.GetATicket())
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync(Data.DataFactory.GetATicket())
                 .Verifiable();
 
             _ticketService

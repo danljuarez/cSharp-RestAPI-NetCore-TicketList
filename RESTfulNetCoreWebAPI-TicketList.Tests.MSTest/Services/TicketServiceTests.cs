@@ -30,7 +30,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
         }
 
         [TestMethod]
-        public void GetTicket_Should_throw_ArgumentException_When_ticket_id_is_zero()
+        public async Task GetTicketAsync_Should_throw_ArgumentOutOfRangeException_When_ticket_id_is_zero()
         {
             // Arrange
             var id = 0;
@@ -38,30 +38,30 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var ticketService = new TicketService(_ticketRepository.Object);
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => ticketService.GetTicket(id));
+            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => ticketService.GetTicketAsync(id));
         }
 
         [TestMethod]
-        public void GetTicket_Should_not_return_null_ticket_object_When_ticket_exists()
+        public async Task GetTicketAsync_Should_not_return_null_ticket_object_When_ticket_exists()
         {
             // Arrange
             var id = 3;
 
             _ticketRepository
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns(Data.DataFactory.GetATicket());
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync(Data.DataFactory.GetATicket());
 
             var ticketService = new TicketService(_ticketRepository.Object);
 
             // Act
-            var result = ticketService.GetTicket(id);
+            var result = await ticketService.GetTicketAsync(id);
 
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(id, result?.Id);
             Assert.AreEqual("Test Event 03", result?.EventName);
             Assert.AreEqual("Test Event Description 03", result?.Description);
-            _ticketRepository.Verify(_ => _.GetTicket(It.IsAny<int>()), Times.Once);
+            _ticketRepository.Verify(_ => _.GetTicketAsync(It.IsAny<int>()), Times.Once);
         }
 
         [TestMethod]
@@ -123,7 +123,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
         }
 
         [TestMethod]
-        public void DeleteTicketAsync_Should_throw_ArgumentException_When_ticket_id_is_zero()
+        public async Task DeleteTicketAsync_Should_throw_ArgumentOutOfRangeException_When_ticket_id_is_zero()
         {
             // Arrange
             var id = 0;
@@ -131,23 +131,23 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var ticketService = new TicketService(_ticketRepository.Object);
 
             // Act & Assert
-            Assert.ThrowsExceptionAsync<ArgumentException>(() => ticketService.DeleteTicketAsync(id));
+            await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => ticketService.DeleteTicketAsync(id));
         }
 
         [TestMethod]
-        public void DeleteTicketAsync_Should_throw_ArgumentNullException_When_GetTicket_method_returns_null()
+        public async Task DeleteTicketAsync_Should_throw_KeyNotFoundException_When_GetTicket_method_returns_null()
         {
             // Arrange
             var id = 5;
 
             _ticketRepository
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns((Ticket?)null);
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync((Ticket?)null);
 
             var ticketService = new TicketService(_ticketRepository.Object);
 
             // Act & Assert
-            Assert.ThrowsExceptionAsync<ArgumentNullException>(() => ticketService.DeleteTicketAsync(id));
+            await Assert.ThrowsExceptionAsync<KeyNotFoundException>(() => ticketService.DeleteTicketAsync(id));
         }
 
         [TestMethod]
@@ -157,8 +157,8 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var id = 3;
 
             _ticketRepository
-                .Setup(_ => _.GetTicket(It.IsAny<int>()))
-                .Returns(Data.DataFactory.GetATicket())
+                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .ReturnsAsync(Data.DataFactory.GetATicket())
                 .Verifiable();
 
             _ticketRepository
@@ -175,7 +175,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             await ticketService.DeleteTicketAsync(id);
 
             // Assert
-            _ticketRepository.Verify(_ => _.GetTicket(It.IsAny<int>()), Times.Once);
+            _ticketRepository.Verify(_ => _.GetTicketAsync(It.IsAny<int>()), Times.Once);
             _ticketRepository.Verify(_ => _.DeleteTicket(It.IsAny<Ticket>()), Times.Once);
             _ticketRepository.Verify(_ => _.SaveAsync(), Times.Once);
         }

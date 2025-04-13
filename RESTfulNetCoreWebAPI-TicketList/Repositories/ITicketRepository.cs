@@ -8,7 +8,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Repositories
 
         void DeleteTicket(Ticket ticket);
 
-        Ticket? GetTicket(int id);
+        Task<Ticket?> GetTicketAsync(int id);
 
         Task<List<Ticket>> GetTicketsAsync();
 

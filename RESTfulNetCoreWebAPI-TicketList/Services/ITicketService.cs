@@ -8,7 +8,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Services
 
         Task DeleteTicketAsync(int id);
 
-        Ticket? GetTicket(int id);
+        Task<Ticket?> GetTicketAsync(int id);
 
         Task<List<Ticket>> GetTicketsAsync();
 
