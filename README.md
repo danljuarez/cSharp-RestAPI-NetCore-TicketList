@@ -14,7 +14,7 @@ Key features of the project:
 - **Unit Testing**: Uses MS Unit Test and Moq, with flexibility to integrate other C# testing frameworks, to facilitate TDD and promote comprehensive test coverage.
 - **Azure Deployment**: Follows Microsoft’s step-by-step guidance for deploying the project to Azure App Services.
 
-Throughout the interview, I will be available to explain any of these approaches in detail, discussing the rationale behind the design choices and their benefits in real-world application development.
+If discussed during an interview, I will be available to explain any of these approaches in detail, discussing the rationale behind the design choices and their benefits in real-world application development.
 
 ## Technical Specifications
 - **Development Environment**: Visual Studio 2022 Community Edition version 17.12.3
