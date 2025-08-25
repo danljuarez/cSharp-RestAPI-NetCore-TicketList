@@ -23,7 +23,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var fiboSequenceSample = Data.DataFactory.GetFirstSinglesFibonacciSequence();
 
             _miscellaneousService
-                .Setup(_ => _.GetFibonacciSequence(It.IsAny<int>()))
+                .Setup(service => service.GetFibonacciSequence(It.IsAny<int>()))
                 .Returns(expectedFibonacciSequence);
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
@@ -50,7 +50,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var expectedFibonacciSequence = _fibonacciHelper.CalculateFibonacci(maxFibonacciValue);
 
             _miscellaneousService
-                .Setup(_ => _.GetFibonacciSequence(It.IsAny<int>()))
+                .Setup(service => service.GetFibonacciSequence(It.IsAny<int>()))
                 .Returns(expectedFibonacciSequence);
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
@@ -70,7 +70,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _miscellaneousService
-                .Setup(_ => _.GetFibonacciSequence(It.IsAny<int>()))
+                .Setup(service => service.GetFibonacciSequence(It.IsAny<int>()))
                 .Throws<ArgumentOutOfRangeException>();
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
@@ -92,7 +92,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var palindromeResponse = Data.DataFactory.GetPalindromeResponseList();
 
             _miscellaneousService
-                .Setup(_ => _.GetPalindromeWords(It.IsAny<string[]>()))
+                .Setup(service => service.GetPalindromeWords(It.IsAny<string[]>()))
                 .Returns(expectedPalindromeResponse);
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
@@ -116,7 +116,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _miscellaneousService
-                .Setup(_ => _.GetPalindromeWords(It.IsAny<string[]>()))
+                .Setup(service => service.GetPalindromeWords(It.IsAny<string[]>()))
                 .Throws<Exception>();
 
             var miscellaneousController = new MiscellaneousController(_miscellaneousService.Object);
