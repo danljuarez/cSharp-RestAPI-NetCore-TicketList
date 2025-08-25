@@ -108,9 +108,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Data
         public static string[] GetAtLeastOnePalindromeItemWithEmptyValue()
             => ["Kayak", ""];
 
-        public static string[] GetAtLeastOnePalindromeItemWithNullValue()
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        public static string?[] GetAtLeastOnePalindromeItemWithNullValue()
             => ["Noon", null];
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
     }
 }
