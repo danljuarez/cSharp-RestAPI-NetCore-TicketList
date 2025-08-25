@@ -24,7 +24,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var expectedTicketsCount = 4;
 
             _ticketService
-                .Setup(_ => _.GetTicketsAsync())
+                .Setup(service => service.GetTicketsAsync())
                 .ReturnsAsync(Data.DataFactory.CreateTicketList())
                 .Verifiable();
 
@@ -50,7 +50,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync(Data.DataFactory.GetATicket());
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -74,7 +74,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync((Ticket?)null);
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -93,7 +93,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             // Arrange
             int id = 0;
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .Throws(() => new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative"));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -114,11 +114,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var expectedTicketId = 5;
 
             _mapper
-                .Setup(_ => _.Map<Ticket>(It.IsAny<TicketInputDTO>()))
+                .Setup(map => map.Map<Ticket>(It.IsAny<TicketInputDTO>()))
                 .Returns(Data.DataFactory.CreateTicket());
 
             _ticketService
-                .Setup(_ => _.AddTicketAsync(It.IsAny<Ticket>()))
+                .Setup(service => service.AddTicketAsync(It.IsAny<Ticket>()))
                 .ReturnsAsync(Data.DataFactory.CreateTicket());
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -141,7 +141,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.AddTicketAsync(It.IsAny<Ticket>()))
+                .Setup(service => service.AddTicketAsync(It.IsAny<Ticket>()))
                 .Throws<ArgumentNullException>();
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -163,19 +163,19 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             var currentTicket = ticket.DeepCopy(); // DeepCopy() is an extension method created on this project
 
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync(ticket)
                 .Verifiable();
 
             _ticketService
-                .Setup(_ => _.PatchTicketAsync(It.IsAny<Ticket>()))
+                .Setup(service => service.PatchTicketAsync(It.IsAny<Ticket>()))
                 .Verifiable();
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
             var patchTicket = new JsonPatchDocument<Ticket>();
-            patchTicket.Replace(_ => _.EventName, "Updated Test Event Name");
-            patchTicket.Replace(_ => _.Description, "Updated Test Event Description");
+            patchTicket.Replace(t => t.EventName, "Updated Test Event Name");
+            patchTicket.Replace(t => t.Description, "Updated Test Event Description");
 
             // Act
             var actionResult = await ticketsController.PatchTicket(It.IsAny<int>(), patchTicket);
@@ -199,7 +199,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             // Arrange
             int id = 0;
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .Throws(() => new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative"));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -219,7 +219,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync((Ticket?)null);
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -237,12 +237,12 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync(Data.DataFactory.GetATicket())
                 .Verifiable();
 
             _ticketService
-                .Setup(_ => _.PatchTicketAsync(It.IsAny<Ticket>()))
+                .Setup(service => service.PatchTicketAsync(It.IsAny<Ticket>()))
                 .Throws<Exception>()
                 .Verifiable();
 
@@ -264,7 +264,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.DeleteTicketAsync(It.IsAny<int>()));
+                .Setup(service => service.DeleteTicketAsync(It.IsAny<int>()));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
 
@@ -283,7 +283,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         {
             // Arrange
             _ticketService
-                .Setup(_ => _.DeleteTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.DeleteTicketAsync(It.IsAny<int>()))
                 .Throws(() => new KeyNotFoundException("Ticket not found."));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -303,7 +303,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
             // Arrange
             int id = 0;
             _ticketService
-                .Setup(_ => _.DeleteTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.DeleteTicketAsync(It.IsAny<int>()))
                 .Throws(() => new ArgumentOutOfRangeException(nameof(id), "Parameter value cannot be cero or negative"));
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
@@ -321,7 +321,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Controllers
         public async Task DeleteTicket_Should_return_statusCode_InternalServerError_When_Exception_is_thrown()
         {
             _ticketService
-                .Setup(_ => _.DeleteTicketAsync(It.IsAny<int>()))
+                .Setup(service => service.DeleteTicketAsync(It.IsAny<int>()))
                 .Throws<Exception>();
 
             var ticketsController = new TicketsController(_ticketService.Object, _mapper.Object);
