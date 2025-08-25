@@ -17,7 +17,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var expectedCount = 4;
 
             _ticketRepository
-                .Setup(_ => _.GetTicketsAsync())
+                .Setup(repository => repository.GetTicketsAsync())
                 .ReturnsAsync(Data.DataFactory.CreateTicketList());
 
             var ticketService = new TicketService(_ticketRepository.Object);
@@ -48,7 +48,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var id = 3;
 
             _ticketRepository
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(repository => repository.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync(Data.DataFactory.GetATicket());
 
             var ticketService = new TicketService(_ticketRepository.Object);
@@ -81,11 +81,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var expectedTicketId = 5;
 
             _ticketRepository
-                .Setup(_ => _.AddTicketAsync(It.IsAny<Ticket>()))
+                .Setup(repository => repository.AddTicketAsync(It.IsAny<Ticket>()))
                 .Verifiable();
 
             _ticketRepository
-                .Setup(_ => _.SaveAsync())
+                .Setup(repository => repository.SaveAsync())
                 .Verifiable();
 
             var ticketService = new TicketService(_ticketRepository.Object);
@@ -104,11 +104,11 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
         {
             // Arrange
             _ticketRepository
-                .Setup(_ => _.UpdateTicket(It.IsAny<Ticket>()))
+                .Setup(repository => repository.UpdateTicket(It.IsAny<Ticket>()))
                 .Verifiable();
 
             _ticketRepository
-                .Setup(_ => _.SaveAsync())
+                .Setup(repository => repository.SaveAsync())
                 .Verifiable();
 
             var ticketService = new TicketService(_ticketRepository.Object);
@@ -141,7 +141,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var id = 5;
 
             _ticketRepository
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(repository => repository.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync((Ticket?)null);
 
             var ticketService = new TicketService(_ticketRepository.Object);
@@ -157,16 +157,16 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var id = 3;
 
             _ticketRepository
-                .Setup(_ => _.GetTicketAsync(It.IsAny<int>()))
+                .Setup(repository => repository.GetTicketAsync(It.IsAny<int>()))
                 .ReturnsAsync(Data.DataFactory.GetATicket())
                 .Verifiable();
 
             _ticketRepository
-                .Setup(_ => _.DeleteTicket(It.IsAny<Ticket>()))
+                .Setup(repository => repository.DeleteTicket(It.IsAny<Ticket>()))
                 .Verifiable();
 
             _ticketRepository
-                .Setup(_ => _.SaveAsync())
+                .Setup(repository => repository.SaveAsync())
                 .Verifiable();
 
             var ticketService = new TicketService(_ticketRepository.Object);
@@ -175,9 +175,9 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             await ticketService.DeleteTicketAsync(id);
 
             // Assert
-            _ticketRepository.Verify(_ => _.GetTicketAsync(It.IsAny<int>()), Times.Once);
-            _ticketRepository.Verify(_ => _.DeleteTicket(It.IsAny<Ticket>()), Times.Once);
-            _ticketRepository.Verify(_ => _.SaveAsync(), Times.Once);
+            _ticketRepository.Verify(repository => repository.GetTicketAsync(It.IsAny<int>()), Times.Once);
+            _ticketRepository.Verify(repository => repository.DeleteTicket(It.IsAny<Ticket>()), Times.Once);
+            _ticketRepository.Verify(repository => repository.SaveAsync(), Times.Once);
         }
     }
 }
