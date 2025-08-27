@@ -37,7 +37,7 @@ namespace RESTfulNetCoreWebAPI_TicketList
                 });
             });
 
-            // Disables Cross-Origin Requests (CORS)
+            // Disable Cross-Origin Requests (CORS) - For the purpose of this sampler. Do not use this in production environments.
             services.AddCors();
         }
 
@@ -52,8 +52,8 @@ namespace RESTfulNetCoreWebAPI_TicketList
 
             app.UseHttpsRedirection();
 
-            // Disables Cross-Origin Requests (CORS)
-            app.UseCors(_ => _
+            // Disable Cross-Origin (CORS) - For the purpose of this sampler. Do not use this in production environments.
+            app.UseCors(options => options
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .SetIsOriginAllowed(origin => true) // Allow any origin
