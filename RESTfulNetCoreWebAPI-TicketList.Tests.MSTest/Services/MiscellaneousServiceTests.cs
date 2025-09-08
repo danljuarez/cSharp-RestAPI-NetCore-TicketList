@@ -65,7 +65,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Services
             var miscellaneousService = new MiscellaneousService(_fibonacciSequence, _palindromeWords);
 
             // Act & Assert
-            Assert.ThrowsException<ArgumentNullException>(() => miscellaneousService.GetPalindromeWords(Data.DataFactory.GetAtLeastOnePalindromeItemWithNullValue()));
+            Assert.ThrowsException<ArgumentNullException>(() => miscellaneousService.GetPalindromeWords(Data.DataFactory.GetAtLeastOnePalindromeItemWithNullValue()!));
         }
 
         [TestMethod]

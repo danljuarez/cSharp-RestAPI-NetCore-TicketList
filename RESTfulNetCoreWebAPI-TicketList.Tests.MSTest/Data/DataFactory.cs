@@ -108,7 +108,7 @@ namespace RESTfulNetCoreWebAPI_TicketList.Tests.MSTest.Data
         public static string[] GetAtLeastOnePalindromeItemWithEmptyValue()
             => ["Kayak", ""];
 
-        public static string?[] GetAtLeastOnePalindromeItemWithNullValue()
+        public static string?[]? GetAtLeastOnePalindromeItemWithNullValue()
             => ["Noon", null];
     }
 }
