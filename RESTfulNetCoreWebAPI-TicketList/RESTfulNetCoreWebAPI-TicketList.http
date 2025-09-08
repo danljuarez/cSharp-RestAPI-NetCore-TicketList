@@ -1,6 +1,0 @@
-@RESTfulNetCoreWebAPI_TicketList_HostAddress = http://localhost:5190
-
-GET {{RESTfulNetCoreWebAPI_TicketList_HostAddress}}/api/tickets/getAll
-Accept: application/json
-
-###
